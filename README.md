@@ -1,6 +1,6 @@
 # HangFire-CronJob - Creating a Hangfire recurring job in .NET 8 
 
-Step 1: Set Up the Project
+**Step 1:** Set Up the Project
 Create a .NET 8 Project: Open your IDE and create a .NET 8 Web API project.
 Install Hangfire Packages: Run the following commands to add Hangfire packages via the .NET CLI or the Package Manager Console:
 
@@ -8,8 +8,8 @@ Install Hangfire Packages: Run the following commands to add Hangfire packages v
 dotnet add package Hangfire
 dotnet add package Hangfire.AspNetCore
 ````
-Step 2: Configure Hangfire in Program.cs
-Since .NET 8 projects typically use a single Program.cs file, you’ll add configuration there.
+**Step 2:** Configure Hangfire in Program.cs
+Since .NET 8 projects typically use a single Program.cs file, youâ€™ll add configuration there.
 
 Configure Hangfire Services: Set up Hangfire to use a persistent storage provider (e.g., SQL Server) and configure it to run jobs in the background.
 
@@ -50,7 +50,7 @@ app.MapControllers();
 app.Run();
 ````
 
-Step 3: Create a Background Job Service
+**Step 3:** Create a Background Job Service
 Define the method you want to run on a recurring basis in a separate service class.
 
 Create the Job Service: Create a class, e.g., JobService, with a method for the recurring task.
@@ -69,7 +69,7 @@ Register the Service in DI Container: In Program.cs, register this service so it
 ````
 builder.Services.AddTransient<JobService>();
 ````
-Step 4: Create a Controller to Trigger the Recurring Job Setup
+**Step 4:** Create a Controller to Trigger the Recurring Job Setup
 Create the Controller: Add a new API controller, e.g., JobController. In this controller, inject both IRecurringJobManager (to schedule recurring jobs) and JobService (for the job logic). Use an endpoint to start the recurring job when called.
 
 ````
@@ -105,7 +105,7 @@ public class JobController : ControllerBase
 ````
 The Cron.Minutely expression sets the job to run every minute. You can adjust this with other expressions like Cron.Daily() or Cron.Hourly().
 
-Step 5: Test the Setup
+**Step 5:** Test the Setup
 Start the Application: Run the .NET 8 application.
 
 Trigger the Job Setup via API: Use a tool like Postman or curl to call the endpoint and start the recurring job.
@@ -121,13 +121,18 @@ Dependency Injection for JobService: By registering JobService in DI, you ensure
 Error Handling: Hangfire provides retry logic and error handling, configurable through the Hangfire Dashboard.
 
 Here are some standard Cron expressions:
-
+````
 Cron.Daily() - Runs daily at midnight.
 Cron.Hourly() - Runs hourly.
 Cron.Minutely() - Runs every minute.
 Cron.Weekly() - Runs weekly.
 Cron.Monthly() - Runs monthly.
 
+
+*/1 * * * * // Every minute
+````
+
+Create Dynamic Job
 ````
 POST http://localhost:5000/api/job/schedule-job
 Content-Type: application/json
@@ -135,7 +140,7 @@ Content-Type: application/json
 {
   "JobName": "TestJob1",
   "MethodName": "ProcessJob",
-  "CronExpression": "*/1 * * * *", // Every minute
+  "CronExpression": "*/1 * * * *",
   "JobInput": "\"Hello, this is a dynamic job!\""
 }
 ````
